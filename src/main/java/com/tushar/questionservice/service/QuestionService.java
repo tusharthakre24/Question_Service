@@ -1,5 +1,6 @@
 package com.tushar.questionservice.service;
 
+import com.tushar.questionservice.model.Answer;
 import com.tushar.questionservice.model.Question;
 import com.tushar.questionservice.repo.QuestionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +34,24 @@ public class QuestionService {
     public ResponseEntity<List<Question>> getQuestionByCategory(String category) {
         List<Question> questions = questionRepo.findByCategory(category);
         return new ResponseEntity<>(questions, HttpStatus.OK);
+    }
+
+    public ResponseEntity<String> addMultipleQuestions(List<Question> questions) {
+        questionRepo.saveAll(questions);
+        return new ResponseEntity<>("success",HttpStatus.OK);
+
+    }
+
+    public ResponseEntity<Integer> getScore(List<Answer> answers) {
+        int score = 0;
+        List<Question> list = questionRepo.findAll();
+        for (Answer ans : answers){
+            for (Question q : list){
+                if (ans.getQuestion().equalsIgnoreCase(q.getQuestion()) && ans.getSubmittedAnswer().equalsIgnoreCase(q.getAnswer())){
+                    score = score + 1;
+                }
+            }
+        }
+        return new ResponseEntity<>(score, HttpStatus.OK);
     }
 }

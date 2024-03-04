@@ -1,5 +1,6 @@
 package com.tushar.questionservice.controller;
 
+import com.tushar.questionservice.model.Answer;
 import com.tushar.questionservice.model.Question;
 import com.tushar.questionservice.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,18 @@ public class QuestionController {
         return questionService.addQuestion(question);
     }
 
+    @PostMapping("/addMultipleQuestions")
+    public ResponseEntity<String> addMultipleQuestions(@RequestBody List<Question> questions){
+        return questionService.addMultipleQuestions(questions);
+    }
+
     @GetMapping("/getQuestionByCategory/{category}")
     public ResponseEntity<List<Question>> getQuestionById(@PathVariable String category){
         return questionService.getQuestionByCategory(category);
+    }
+
+    @PostMapping("/getScore")
+    public ResponseEntity<Integer> getScore(@RequestBody List<Answer> answers){
+        return questionService.getScore(answers);
     }
 }
